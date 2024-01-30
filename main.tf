@@ -147,11 +147,19 @@ resource "aws_msk_cluster" "default" {
         volume_size = var.broker_volume_size
 
         dynamic "provisioned_throughput" {
-          for_each = var.broker_ebs_provisioned_throughput_enabled ? [1] : []
+          for_each = var.broker_ebs_provisioned_throughput_enabled && var.broker_ebs_provisioned_throughput_state ? [1] : []
 
           content {
-            enabled           = var.broker_ebs_provisioned_throughput_state
+            enabled           = true
             volume_throughput = var.broker_ebs_provisioned_throughput_value
+          }
+        }
+
+        dynamic "provisioned_throughput" {
+          for_each = var.broker_ebs_provisioned_throughput_enabled && !var.broker_ebs_provisioned_throughput_state ? [1] : []
+
+          content {
+            enabled           = false
           }
         }
       }
