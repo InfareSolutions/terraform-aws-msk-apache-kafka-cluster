@@ -159,7 +159,7 @@ resource "aws_msk_cluster" "default" {
           for_each = var.broker_ebs_provisioned_throughput_enabled && !var.broker_ebs_provisioned_throughput_state ? [1] : []
 
           content {
-            enabled           = false
+            enabled = false
           }
         }
       }
